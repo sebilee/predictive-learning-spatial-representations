@@ -39,14 +39,16 @@ def model_training(model, training_input, training_output, evaluator_input, eval
         optimizer.step()
 
         if epoch % 10 == 0:
-            print(epoch)
+            #print(epoch)
             trainer_error = model_evaluation(model, training_input, training_output, "trainer")
             validator_error = model_evaluation(model, evaluator_input, evaluator_output, "validator")
             trainer_error_log.append(trainer_error)
             validator_error_log.append(validator_error)
             epochs_recorded.append(epoch)
+    print(f"Trainer error: {trainer_error}")
+    print(f"Validator error: {validator_error}")
     #print(hidden_sequence.shape)
-    print(prediction.shape)
+    #print(prediction.shape)
     plt.plot(epochs_recorded, trainer_error_log, label = "training")
     plt.plot(epochs_recorded, validator_error_log, label = "test")
     plt.xlabel("epoch")
@@ -75,8 +77,8 @@ def model_evaluation(model, inputs, targets, name):
     with torch.no_grad():
         prediction = model(inputs)
         test_loss = loss_fn(prediction, targets)
-    print(test_loss.item())
+    #print(test_loss.item())
 
-    print(f"Test loss, {name}: ", test_loss.item())
+    #print(f"Test loss, {name}: ", test_loss.item())
     model.train()
     return test_loss.item()

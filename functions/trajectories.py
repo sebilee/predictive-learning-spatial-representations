@@ -28,9 +28,9 @@ def generate_trajectory(grid, policy, policy_probabilities, view_size, n_steps, 
         observation = agent.action(action)
 
     #print(agent.states)
-    print(len(agent.states))
-    print(len(agent.observations))
-    print(len(agent.actions))
+    #print(len(agent.states))
+    #print(len(agent.observations))
+    #print(len(agent.actions))
 
     return agent
 
@@ -49,25 +49,25 @@ def prepare_data(agent):                                                        
         agent.states,
         dtype = torch.long
     )
-    print(observations.shape)
-    print(actions.shape)
-    print(states.shape)
+    #print(observations.shape)
+    #print(actions.shape)
+    #print(states.shape)
     observations = observations.flatten(start_dim = 1)
-    print(observations.shape)
+    #print(observations.shape)
     actions_onehot = torch.nn.functional.one_hot(
         actions,
         num_classes = 4
     ).float()
-    print(actions_onehot.shape)
+    #print(actions_onehot.shape)
     input_obs = observations[:-1]
     target_obs = observations[1:]
     inputs = torch.cat(
         (input_obs, actions_onehot),
         dim = 1
     )
-    print("input observations: ", input_obs.shape)
-    print("actions: ", actions_onehot.shape)
-    print("NN inputs: ", inputs.shape)
-    print("targets: ", target_obs.shape)
+    #print("input observations: ", input_obs.shape)
+    #print("actions: ", actions_onehot.shape)
+    #print("NN inputs: ", inputs.shape)
+    #print("targets: ", target_obs.shape)
     
     return inputs, target_obs
