@@ -168,6 +168,7 @@ class GridWorld:
         rng = np.random.default_rng(seed)
 
         x, y = valid_positions[rng.integers(len(valid_positions))]
+        direction = rng.integers(4)
 
-        return x, y
+        return x, y, direction
             

@@ -13,22 +13,22 @@ class SimpleMLP(nn.Module):
         self.hidden = nn.Linear(input_size, hidden_size)
 
         if nonlinearity == "relu":
-            self.activation == nn.ReLU()
+            self.activation = nn.ReLU()
         elif nonlinearity == "tanh":
-            self.activation == nn.tanh()
+            self.activation = nn.Tanh()
         else:
             raise ValueError("Only ReLU and Tanh activations are allowed")
 
         self.decoder = nn.Linear(hidden_size, output_size)
 
-        def forward(self, x):
-            h = self.activation(self.hidden(x))
-            prediction = self.decoder(h)
-            return prediction
+    def forward(self, x):
+        h = self.activation(self.hidden(x))
+        prediction = self.decoder(h)
+        return prediction
 
-        def get_hidden_states(self, x):
-            h = self.activation(self.hidden(x))
-            return h
+    def get_hidden_states(self, x):
+        h = self.activation(self.hidden(x))
+        return h
 
 
 

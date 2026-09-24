@@ -11,11 +11,17 @@ def random_policy(rng, probabilities):
         [0, 1, 2, 3],
         p = probabilities
     )
-def generate_trajectory(grid, policy, policy_probabilities, start_x, start_y, start_direction, view_size, n_steps, seed):
-    
-    agent = Agent(start_x, start_y, view_size, grid, start_direction)   #Create agent
+def generate_trajectory(grid, policy, policy_probabilities, view_size, n_steps, move_seed, startx=None, starty=None, start_direction=None, random_start=False, start_seed=None):
 
-    rng = np.random.default_rng(seed)
+    if random_start:
+        startx, starty, start_direction = grid.randomXYStart(start_seed)
+    
+    elif startx is None or starty is None or start_direction is None:
+        raise ValueError("startx, starty and direction must be provided when random start is false")
+    
+    agent = Agent(startx, starty, view_size, grid, start_direction)   #Create agent
+
+    rng = np.random.default_rng(move_seed)
 
     for i in range(n_steps):                                  #Agent random walk
         action = policy(rng, policy_probabilities)

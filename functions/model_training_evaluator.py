@@ -39,7 +39,7 @@ def model_training(model, training_input, training_output, evaluator_input, eval
         optimizer.step()
 
         if epoch % 10 == 0:
-            #print(epoch, loss.item())
+            print(epoch)
             trainer_error = model_evaluation(model, training_input, training_output, "trainer")
             validator_error = model_evaluation(model, evaluator_input, evaluator_output, "validator")
             trainer_error_log.append(trainer_error)
