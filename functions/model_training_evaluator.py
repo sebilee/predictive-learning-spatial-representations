@@ -82,3 +82,29 @@ def model_evaluation(model, inputs, targets, name):
     #print(f"Test loss, {name}: ", test_loss.item())
     model.train()
     return test_loss.item()
+
+def evaluator_per_action(model, inputs, targets, name):
+
+    loss_fn = nn.MSELoss()
+    actions_onehot = inputs[..., -4:]
+    actions = actions_onehot.argmax(dim=-1)
+    action_losses = [None, None, None, None]
+    model.eval()
+    prediction = model(inputs)
+    for i in range(4):
+        mask = actions == i
+        if mask.sum() == 0:
+            print(f"No samples for {i}")
+            continue
+        movement_predictions = prediction[mask]
+        movement_targets = targets[mask]
+        loss = loss_fn(movement_predictions, movement_targets)
+        action_losses[i] = loss.item()
+
+    #print(f"{name} loss per action: ")
+    #print(f"Forward: {action_losses[0]}")
+    #print(f"Left: {action_losses[1]}")
+    #print(f"Right: {action_losses[2]}")
+    #print(f"Stop: {action_losses[3]}")
+
+    return name, action_losses
