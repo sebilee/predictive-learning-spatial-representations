@@ -14,6 +14,15 @@ import matplotlib.pyplot as plt
 
 def model_training(model, training_input, training_output, evaluator_input, evaluator_output, epochs):
 
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = model.to(device)
+
+    training_input, training_output, evaluator_input, evaluator_output = [
+        x.to(device)
+        for x in (training_input, training_output, evaluator_input, evaluator_output)
+        ]
+
+
     loss_fn = nn.MSELoss()
 
     loss_history = []
@@ -77,6 +86,8 @@ def baseline_evaluation(inputs, targets):
 
 
 def model_evaluation(model, inputs, targets):
+    
+    inputs, targets = to_model_device(model, inputs, targets)
 
     loss_fn = nn.MSELoss()
     model.eval()
@@ -92,6 +103,8 @@ def model_evaluation(model, inputs, targets):
 
 def model_evaluation_memoryless(model, inputs, targets):
 
+    inputs, targets = to_model_device(model, inputs, targets)
+
     loss_fn = nn.MSELoss()
     model.eval()
     with torch.no_grad():
@@ -104,6 +117,8 @@ def model_evaluation_memoryless(model, inputs, targets):
     return test_loss.item()
 
 def evaluator_per_action(model, inputs, targets):
+
+    inputs, targets = to_model_device(model, inputs, targets)
 
     loss_fn = nn.MSELoss()
     actions_onehot = inputs[..., -4:]
@@ -131,6 +146,7 @@ def evaluator_per_action(model, inputs, targets):
 
 def evaluator_per_action_memoryless(model, inputs, targets):
 
+    inputs, targets = to_model_device(model, inputs, targets)
     loss_fn = nn.MSELoss()
     actions_onehot = inputs[..., -4:]
     actions = actions_onehot.argmax(dim=-1)
@@ -154,3 +170,7 @@ def evaluator_per_action_memoryless(model, inputs, targets):
     #print(f"Stop: {action_losses[3]}")
 
     return action_losses
+
+def to_model_device(model, *tensors):
+    device = next(model.parameters()).device
+    return tuple(t.to(device) for t in tensors)
