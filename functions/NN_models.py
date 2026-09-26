@@ -4,6 +4,7 @@ import pandas as pd
 import torch
 from torch import nn
 from .gridworld import GridWorld, Agent
+from .model_training_evaluator import to_model_device
 
 
 class SimpleMLP(nn.Module):
@@ -73,6 +74,8 @@ class BasicRNN(nn.Module):
         return prediction
 
     def get_hidden_states(self, x):
+        device = next(self.parameters()).device
+        x = x.to(device)
         hidden_sequence, _ = self.rnn(x)
 
         return hidden_sequence
