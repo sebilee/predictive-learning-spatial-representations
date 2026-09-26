@@ -55,7 +55,26 @@ class BasicRNN(nn.Module):
         prediction = self.decoder(hidden_sequence)
         return prediction
 
+    def forward_no_memory(self, x):
+
+        weights_copy = self.rnn.weight_hh_l0.detach().clone()
+        with torch.no_grad():
+            self.rnn.weight_hh_l0.zero_()
+
+        try:
+            hidden_sequence, final_hidden = self.rnn(x)
+
+            prediction = self.decoder(hidden_sequence)
+
+        finally:
+            with torch.no_grad():
+                self.rnn.weight_hh_l0.copy_(weights_copy)
+        
+        return prediction
+
     def get_hidden_states(self, x):
         hidden_sequence, _ = self.rnn(x)
 
         return hidden_sequence
+
+    

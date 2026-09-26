@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start BIGMETALBRICK",
+            "type": "shell",
+            "command": "/home/seblee/bin/start-lab",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Sync Levenstein",
+            "type": "shell",
+            "command": "/home/seblee/bin/sync-levenstein",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Prepare BIGMETALBRICK",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Start BIGMETALBRICK",
+                "Sync Levenstein"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
