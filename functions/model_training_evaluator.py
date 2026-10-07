@@ -81,7 +81,7 @@ def baseline_evaluation(inputs, targets):
     loss_fn = nn.MSELoss()
     baseline_loss = loss_fn(baseline_prediction, targets)
 
-    print("Baseline loss: ", baseline_loss.item())
+    return baseline_loss.item()
 
 
 
